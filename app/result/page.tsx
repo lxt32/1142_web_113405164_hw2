@@ -1,56 +1,94 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { usePsyStore } from "@/store/store";
+import { resultDescriptions } from "@/store/store";
 import { useRouter } from "next/navigation"
 
 export default function Result() {
   const router = useRouter();
   const psyData = usePsyStore( (state)=> state.psyData );
-  const setPsyScore = usePsyStore( (state) => state.setScore );
-  const [psyResult, setPsyResult] = useState(<></>);
+  const resetQuiz = usePsyStore( (state) => state.resetQuiz );
+  const resultRef = useRef<HTMLDivElement>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
   
-  useEffect( ()=>{
-    getResult();
-  }, [psyData.score]);
+  const resultData = psyData.result ? resultDescriptions[psyData.result as keyof typeof resultDescriptions] : null;
 
-
-  function getResult(){
-    if( psyData.score < 3 ){
-      setPsyResult(
-        <div>
-          結果 A
-          <a href="https://google.com">GOOGLE</a>
-        </div>
-      );
-    }else if( psyData.score >= 3 && psyData.score < 7 ){
-      setPsyResult(<div>結果 B</div>);
-    }else{
-      setPsyResult(<div>結果 C</div>);
-    }
-  }
-
-  function playAgain(){
-    setPsyScore(0);
+  function handleReturnHome(){
+    resetQuiz();
     router.push("/");
   }
 
-  
-  
+  async function downloadAsImage() {
+    if (!resultRef.current) return;
+    
+    setIsDownloading(true);
+    try {
+      // 動態導入 html2canvas
+      const html2canvas = (await import('html2canvas')).default;
+      
+      // 獲取結果卡片區域
+      const canvas = await html2canvas(resultRef.current, {
+        backgroundColor: '#000000',
+        scale: 2,
+      });
+      
+      // 轉換為圖片並下載
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = `AI溝通師測驗結果_${resultData?.name}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('下載失敗:', error);
+      alert('下載失敗，請稍後重試');
+    } finally {
+      setIsDownloading(false);
+    }
+  }
+
   return (
-    <>
-      <div className="flex flex-col items-center gap-4">
-        
-        結果，目前積分：{psyData.score}
-        
-        {psyResult}
-        
-        <div 
-          className="text-white bg-black px-3 py-2" 
-          onClick={playAgain}>
-          再玩一次
+    <div className="flex flex-col justify-center items-center h-screen w-full gap-6 sm:gap-8 p-4 sm:p-6 bg-gray-950 overflow-y-auto">
+      {/* 結果卡片 */}
+      <div 
+        ref={resultRef}
+        className="bg-transparent border border-white rounded-none p-6 sm:p-8 w-full max-w-sm text-white text-center"
+      >
+        <div className="text-6xl sm:text-7xl mb-4 sm:mb-6">{resultData?.emoji}</div>
+        <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">{resultData?.name}</h2>
+        <p className="text-base sm:text-lg font-medium italic mb-4 sm:mb-6 opacity-95">「{resultData?.quote}」</p>
+        <p className="text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 px-2">{resultData?.description}</p>
+        <div className="flex justify-between items-center text-xs sm:text-sm opacity-90 border-t border-white border-opacity-30 pt-3 sm:pt-4 px-2">
+          <span>代表技能：{resultData?.skill}</span>
+        </div>
+        <div className="text-xs sm:text-sm opacity-90 pt-2">
+          {resultData?.extra}
         </div>
       </div>
-    </>
+
+      {/* 按鈕組 */}
+      <div className="flex flex-col gap-2 sm:gap-3 w-full max-w-sm px-4 sm:px-0">
+        <button 
+          onClick={downloadAsImage}
+          disabled={isDownloading}
+          className="w-full px-4 sm:px-6 py-2 sm:py-3 border border-white text-white font-bold text-sm sm:text-base rounded-none hover:scale-105 transition-all duration-300 hover:bg-white hover:bg-opacity-10 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isDownloading ? '下載中...' : '📥 下載結果為 PNG'}
+        </button>
+        
+        <button 
+          onClick={handleReturnHome}
+          className="w-full px-4 sm:px-6 py-2 sm:py-3 border border-white text-white font-bold text-sm sm:text-base rounded-none hover:scale-105 transition-all duration-300 hover:bg-white hover:bg-opacity-10"
+        >
+          返回首頁
+        </button>
+      </div>
+
+      {/* 分享提示 */}
+      <p className="text-gray-400 text-xs sm:text-sm text-center mt-2 sm:mt-4 px-4">
+        分享給朋友，看看他們是哪種 AI 溝通師吧！✨
+      </p>
+    </div>
   );
 
 }
