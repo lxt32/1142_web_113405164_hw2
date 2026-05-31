@@ -38,45 +38,58 @@ import {usePsyStore} from "../../store/store"
           setIsAnimating(false);
         }
         else{
-          // 計算最終結果並跳轉
+          // 計算最終結果並跳轉到準備頁面
           calculateResult();
           setTimeout(() => {
-            router.push("/result");
+            router.push("/prepare");
           }, 300);
         }
       }, 400);
     }
 
-    const progressPercentage = ((questionIndex + 1) / psyData.quizData.length) * 100;
+    function previousQuestion(){
+      setQuestionIndex(questionIndex - 1);
+      setSelectedOption(null);
+    }
+
+    const progressPercentage = (questionIndex / psyData.quizData.length) * 100;
 
   return(
-    <div className="flex flex-col h-screen w-full bg-black p-4 sm:p-6 relative">
-      {/* 進度條 */}
-      <div className="mb-6 sm:mb-8">
-        <div className="flex justify-between items-center mb-2 sm:mb-3">
-          <h2 className="text-base sm:text-lg font-semibold text-white">
-            Q<span className="text-blue-300 font-bold">{questionIndex + 1}</span>/{psyData.quizData.length}
-          </h2>
-          <span className="text-xs sm:text-sm text-gray-300 font-medium">{Math.round(progressPercentage)}%</span>
+    <div className="relative min-h-screen w-full flex flex-col justify-between items-center bg-[#030712] text-white overflow-hidden font-sans p-6 sm:p-12">
+      
+      {/* 背景裝飾：科技感環境光與網格 */}
+      <div className="absolute inset-0 z-0">
+        {/* 背景科幻網格 */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293710_1px,transparent_1px),linear-gradient(to_bottom,#1f293710_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+        {/* 左上與右下的霓虹漸層發光球 */}
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-indigo-500/10 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-purple-500/10 rounded-full blur-[120px]"></div>
+      </div>
+
+      {/* 頂部進度條區域 */}
+      <div className="w-full max-w-3xl z-10 flex flex-col gap-3 mt-4">
+        <div className="flex justify-between items-center text-xs tracking-widest text-gray-400 font-mono">
+          <span>QUESTION {questionIndex + 1} / {psyData.quizData.length}</span>
+          <span className="text-indigo-400 font-bold">{Math.round(progressPercentage)}% COMPLETE</span>
         </div>
-        <div className="w-full bg-gray-700 rounded-full h-2 sm:h-2.5 overflow-hidden">
+        {/* 流線型科技感進度條 */}
+        <div className="w-full h-1.5 bg-gray-900 rounded-full overflow-hidden border border-gray-800/50">
           <div 
-            className="bg-white h-full transition-all duration-500 ease-out"
+            className="h-full bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 shadow-[0_0_12px_rgba(99,102,241,0.5)] transition-all duration-500"
             style={{ width: `${progressPercentage}%` }}
-          />
+          ></div>
         </div>
       </div>
 
-      {/* 問題區域 */}
-      <div className="flex-1 flex flex-col justify-center items-center">
-        <div className="mb-8 sm:mb-12 text-center">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6 leading-relaxed px-2">
-            {psyData.quizData[questionIndex].title}
-          </h1>
-        </div>
+      {/* 主體：題目與選項區 */}
+      <div className="w-full max-w-2xl z-10 flex flex-col my-auto py-8">
+        {/* 題目 */}
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center tracking-wide mb-12 leading-snug">
+          {psyData.quizData[questionIndex].title.split('？')[0]}<span className="bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">？</span>
+        </h2>
 
-        {/* 選項按鈕 */}
-        <div className="flex flex-col gap-4 w-full max-w-sm px-4 sm:px-0">
+        {/* 選項清單 */}
+        <div className="flex flex-col gap-4">
           {
             psyData.quizData[questionIndex].options.map(
               (option:any, index:number) => {
@@ -84,43 +97,62 @@ import {usePsyStore} from "../../store/store"
                 const isAnswered = selectedOption !== null;
                 
                 return(
-                  <div
+                  <button
                     key={index}
-                    className="bg-white/5 rounded-lg p-4 sm:p-5 border border-white/20 backdrop-blur-sm transition-all duration-300"
+                    onClick={() => !isAnimating && nextQuestion(index)}
+                    disabled={isAnimating}
+                    className={`
+                      group w-full flex items-center gap-4 p-4 sm:p-5 rounded-xl text-left font-medium tracking-wide
+                      transition-all duration-300 backdrop-blur-md border
+                      ${isSelected 
+                        ? 'bg-indigo-600/20 border-indigo-400 text-white shadow-[0_0_20px_rgba(99,102,241,0.2)]' 
+                        : isAnswered
+                        ? 'bg-white/[0.02] border-white/[0.06] text-gray-500 cursor-not-allowed opacity-50'
+                        : 'bg-white/[0.02] border-white/[0.06] hover:border-white/20 hover:bg-white/[0.05] text-gray-300 hover:text-white'
+                      }
+                      ${isAnimating && !isSelected ? 'cursor-not-allowed' : 'cursor-pointer'}
+                    `}
                   >
-                    <button
-                      onClick={() => !isAnimating && nextQuestion(index)}
-                      disabled={isAnimating}
-                      className={`
-                        w-full font-bold text-base sm:text-lg transition-all duration-300 focus:outline-none text-left
-                        ${isSelected 
-                          ? 'text-blue-300' 
-                          : isAnswered
-                          ? 'text-gray-500 cursor-not-allowed opacity-50'
-                          : 'text-white hover:text-blue-300'
-                        }
-                        ${isAnimating && !isSelected ? 'cursor-not-allowed' : 'cursor-pointer'}
-                      `}
-                    >
-                      <div className="flex items-center gap-4">
-                        <span className="flex-shrink-0 w-8">
-                          {String.fromCharCode(65 + index)}
-                        </span>
-                        <span className="break-words">{option.text}</span>
-                      </div>
-                    </button>
-                  </div>
+                    {/* 標號 (A, B, C, D) 小方塊 */}
+                    <div className={`
+                      flex items-center justify-center w-8 h-8 rounded-lg font-mono text-sm font-bold transition-all duration-300 flex-shrink-0
+                      ${isSelected 
+                        ? 'bg-indigo-500 text-white shadow-[0_0_10px_rgba(99,102,241,0.5)]' 
+                        : isAnswered
+                        ? 'bg-white/5 border border-white/10 text-gray-600'
+                        : 'bg-white/5 border border-white/10 text-gray-400 group-hover:text-white group-hover:border-white/30'
+                      }
+                    `}>
+                      {String.fromCharCode(65 + index)}
+                    </div>
+                    
+                    {/* 選項文字 */}
+                    <span className="text-base sm:text-lg">{option.text}</span>
+                  </button>
                 )
               }
             )
           }
         </div>
+
+        {/* 上一題按鈕 */}
+        {questionIndex > 0 && (
+          <button 
+            onClick={previousQuestion}
+            className="mt-8 self-center flex items-center gap-2 text-sm text-gray-500 hover:text-indigo-400 transition-colors duration-300 tracking-wider"
+          >
+            <span>←</span> 上一題
+          </button>
+        )}
       </div>
 
-      {/* 底部提示 */}
-      <div className="text-center text-xs sm:text-sm text-gray-400 mt-6 sm:mt-8">
-        選擇一個選項繼續
+      {/* 底部提示文字 */}
+      <div className="w-full z-10 text-center mb-4">
+        <p className="text-xs tracking-widest text-gray-600 uppercase animate-pulse">
+          選擇一個選項以繼續測驗
+        </p>
       </div>
+
     </div>
   );
 }

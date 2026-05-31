@@ -27,17 +27,10 @@ export default function RootLayout({
       lang="zh-TW"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="h-full flex justify-center w-full bg-black relative overflow-hidden">
-        {/* 浮動泡泡背景 */}
-        <div className="floating-bubble"></div>
-        <div className="floating-bubble"></div>
-        <div className="floating-bubble"></div>
-        <div className="floating-bubble"></div>
-        
+      <body className="h-full w-full bg-[#030712] relative overflow-hidden">
         <div className="w-full h-full overflow-hidden relative z-10">
           {children}
         </div>
-
       </body>
     </html>
   );

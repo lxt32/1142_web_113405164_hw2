@@ -100,36 +100,36 @@ const questionData = [
 // 结果描述
 const resultDescriptions = {
   engineer: {
-    name: "🎯 指令工程師",
-    emoji: "🎯",
-    quote: "「不會問問題的人，才會覺得 AI 不好用。」",
+    name: "指令工程師",
+    emoji: "⌨️",
+    quote: "不會問問題的人，才會覺得 AI 不好用。",
     description: "你相信精準的提示詞是成功的關鍵。你的提示詞可能比作文還長，會把需求、格式、限制條件交代得清清楚楚。AI 在你手上就像高階工具，總能產出符合需求的成果。",
     skill: "Prompt Engineering",
     extra: "危險程度：★★★★★",
     color: "from-blue-400 to-blue-500"
   },
   inspiration: {
-    name: "🎨 靈感召喚師",
+    name: "靈感召喚師",
     emoji: "🎨",
-    quote: "「想到什麼就問什麼，最後通常會很離譜。」",
+    quote: "想到什麼就問什麼，最後通常會很離譜。",
     description: "你把 AI 當成腦力激盪夥伴。你最喜歡問一些天馬行空的問題，例如：「如果貓咪統治世界會怎樣？」「把三國演義寫成戀愛遊戲。」你和 AI 的對話常常越聊越離譜，但也因此產生許多有趣點子。",
     skill: "創意爆發",
     extra: "腦洞指數：∞",
     color: "from-pink-400 to-pink-500"
   },
   detective: {
-    name: "🔍 數據偵探",
+    name: "數據偵探",
     emoji: "🔍",
-    quote: "「相信 AI 前，先查資料再說。」",
+    quote: "相信 AI 前，先查資料再說。",
     description: "你對 AI 的第一反應不是相信，而是驗證。看到回答後會開始：查資料、比對來源、追問細節、找邏輯漏洞。你把 AI 當研究助理，而不是萬事通。",
     skill: "資訊分析",
     extra: "查證慾望：★★★★★",
     color: "from-green-400 to-green-500"
   },
   buddy: {
-    name: "☕ AI夥伴派",
+    name: "AI夥伴派",
     emoji: "☕",
-    quote: "「哎呀，又問了一個無聊的問題。」",
+    quote: "哎呀，又問了一個無聊的問題。",
     description: "你和 AI 的關係最像朋友。你會：問今天吃什麼、問作業怎麼寫、問感情問題、問明天天氣。甚至會對 AI 說謝謝、晚安。你不追求最完美答案，而是享受隨時有人能陪你聊天和解決問題。",
     skill: "生活應用",
     extra: "AI 好感度：100%",

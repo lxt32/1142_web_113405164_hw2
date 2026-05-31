@@ -7,34 +7,53 @@ export default function Home() {
   const [isAnimating, setIsAnimating] = useState(false);
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen w-full gap-6 p-4 sm:p-6 bg-black text-white selection:bg-white/20">
+    <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-[#030712] text-white overflow-hidden font-sans p-6 sm:p-12">
       
-      {/* 標題區域 */}
-      <div className="text-center w-full max-w-2xl px-4">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-wider text-white mb-4">
-          你是哪種類型的 AI 溝通師？
-        </h1>
-        <p className="text-gray-400 text-base sm:text-lg md:text-xl font-light">
-          4 個問題，測出你與 AI 的相處模式！
-        </p>
+      {/* 背景裝飾 */}
+      <div className="absolute inset-0 z-0">
+        {/* 背景科幻網格 */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f293710_1px,transparent_1px),linear-gradient(to_bottom,#1f293710_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+        {/* 霓虹漸層發光球 */}
+        <div className="absolute top-[-20%] left-[-15%] w-[50vw] h-[50vw] bg-indigo-500/10 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-[-15%] right-[-10%] w-[45vw] h-[45vw] bg-purple-500/10 rounded-full blur-[120px]"></div>
       </div>
 
-      {/* 開始按鈕 */}
-      <div className="bg-white/5 rounded-lg border border-white/20 backdrop-blur-sm transition-all duration-300 mt-8 sm:mt-10">
+      {/* 主體內容 */}
+      <div className="w-full max-w-3xl z-10 flex flex-col items-center justify-center py-12">
+        {/* 標題 */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center tracking-wide mb-6 leading-snug md:whitespace-nowrap">
+          你是哪種類型的 <span className="bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">AI 溝通師</span>？
+        </h1>
+        
+        {/* 副標題 */}
+        <p className="text-gray-400 text-base sm:text-lg tracking-wide text-center mb-12">
+          4 個問題，測出你與 AI 的相處模式！
+        </p>
+
+        {/* 開始按鈕 */}
         <Link 
           href="/question"
-          className="block px-8 sm:px-12 py-6 sm:py-8 font-bold text-base sm:text-lg transition-all duration-300 text-white hover:text-blue-300"
+          className={`
+            group flex items-center gap-3 px-8 sm:px-12 py-4 sm:py-5 rounded-xl font-bold text-base sm:text-lg
+            transition-all duration-300 backdrop-blur-md border tracking-wide
+            bg-white/[0.02] border-white/[0.06] hover:border-white/20 hover:bg-indigo-600/20
+            text-white hover:text-cyan-300 hover:shadow-[0_0_30px_rgba(99,102,241,0.3)]
+          `}
           onMouseEnter={() => setIsAnimating(true)}
           onMouseLeave={() => setIsAnimating(false)}
         >
-          開始測驗 → 
+          開始測驗 
+          <span className={`transition-transform duration-300 ${isAnimating ? 'translate-x-2' : ''}`}>→</span>
         </Link>
       </div>
 
       {/* 底部提示 */}
-      <p className="text-gray-500 text-xs sm:text-sm text-center mt-8 sm:mt-12 max-w-md px-6 font-light leading-relaxed">
-        準備好了嗎？讓我們開始一個有趣的旅程，發現你與 AI 相處的方式！
-      </p>
+      <div className="absolute bottom-6 sm:bottom-12 w-full z-10 text-center">
+        <p className="text-xs tracking-widest text-gray-600 uppercase animate-pulse">
+          準備好發現你的 AI 溝通類型了嗎？
+        </p>
+      </div>
+
     </div>
   );
 }
