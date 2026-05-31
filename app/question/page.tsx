@@ -50,7 +50,7 @@ import {usePsyStore} from "../../store/store"
     const progressPercentage = ((questionIndex + 1) / psyData.quizData.length) * 100;
 
   return(
-    <div className="flex flex-col h-screen w-full bg-gray-950 p-4 sm:p-6 relative">
+    <div className="flex flex-col h-screen w-full bg-black p-4 sm:p-6 relative">
       {/* 進度條 */}
       <div className="mb-6 sm:mb-8">
         <div className="flex justify-between items-center mb-2 sm:mb-3">
@@ -76,7 +76,7 @@ import {usePsyStore} from "../../store/store"
         </div>
 
         {/* 選項按鈕 */}
-        <div className="w-full max-w-md space-y-10 sm:space-y-12 px-4 sm:px-0">
+        <div className="flex flex-col gap-4 w-full max-w-sm px-4 sm:px-0">
           {
             psyData.quizData[questionIndex].options.map(
               (option:any, index:number) => {
@@ -84,29 +84,32 @@ import {usePsyStore} from "../../store/store"
                 const isAnswered = selectedOption !== null;
                 
                 return(
-                  <button
+                  <div
                     key={index}
-                    onClick={() => !isAnimating && nextQuestion(index)}
-                    disabled={isAnimating}
-                    className={`
-                      w-full p-6 sm:p-7 rounded-none font-medium text-base sm:text-lg transition-all duration-300 transform
-                      ${isSelected 
-                        ? 'bg-white bg-opacity-20 border border-white text-white' 
-                        : isAnswered
-                        ? 'bg-transparent border border-gray-600 text-gray-500 cursor-not-allowed opacity-50'
-                        : 'bg-transparent border border-white text-white hover:border-white hover:bg-white hover:bg-opacity-10'
-                      }
-                      ${isAnimating && !isSelected ? 'cursor-not-allowed' : 'cursor-pointer'}
-                      focus:outline-none
-                    `}
+                    className="bg-white/5 rounded-lg p-4 sm:p-5 border border-white/20 backdrop-blur-sm transition-all duration-300"
                   >
-                    <div className="flex items-center gap-3">
-                      <span className="flex items-center justify-center w-6 h-6 rounded-full border border-current text-current font-bold text-sm flex-shrink-0">
-                        {String.fromCharCode(65 + index)}
-                      </span>
-                      <span className="text-left break-words">{option.text}</span>
-                    </div>
-                  </button>
+                    <button
+                      onClick={() => !isAnimating && nextQuestion(index)}
+                      disabled={isAnimating}
+                      className={`
+                        w-full font-bold text-base sm:text-lg transition-all duration-300 focus:outline-none text-left
+                        ${isSelected 
+                          ? 'text-blue-300' 
+                          : isAnswered
+                          ? 'text-gray-500 cursor-not-allowed opacity-50'
+                          : 'text-white hover:text-blue-300'
+                        }
+                        ${isAnimating && !isSelected ? 'cursor-not-allowed' : 'cursor-pointer'}
+                      `}
+                    >
+                      <div className="flex items-center gap-4">
+                        <span className="flex-shrink-0 w-8">
+                          {String.fromCharCode(65 + index)}
+                        </span>
+                        <span className="break-words">{option.text}</span>
+                      </div>
+                    </button>
+                  </div>
                 )
               }
             )

@@ -48,7 +48,7 @@ export default function Result() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen w-full gap-6 sm:gap-8 p-4 sm:p-6 bg-gray-950 overflow-y-auto">
+    <div className="flex flex-col justify-center items-center h-screen w-full gap-6 sm:gap-8 p-4 sm:p-6 bg-black overflow-y-auto">
       {/* 結果卡片 */}
       <div 
         ref={resultRef}
@@ -67,21 +67,25 @@ export default function Result() {
       </div>
 
       {/* 按鈕組 */}
-      <div className="flex flex-col gap-2 sm:gap-3 w-full max-w-sm px-4 sm:px-0">
-        <button 
-          onClick={downloadAsImage}
-          disabled={isDownloading}
-          className="w-full px-4 sm:px-6 py-2 sm:py-3 border border-white text-white font-bold text-sm sm:text-base rounded-none hover:scale-105 transition-all duration-300 hover:bg-white hover:bg-opacity-10 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isDownloading ? '下載中...' : '📥 下載結果為 PNG'}
-        </button>
+      <div className="flex flex-col gap-4 w-full max-w-sm px-4 sm:px-0">
+        <div className="bg-white/5 rounded-lg p-4 sm:p-5 border border-white/20 backdrop-blur-sm transition-all duration-300">
+          <button 
+            onClick={downloadAsImage}
+            disabled={isDownloading}
+            className="w-full font-bold text-sm sm:text-base transition-all duration-300 focus:outline-none text-white hover:text-blue-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isDownloading ? '下載中...' : '下載結果'}
+          </button>
+        </div>
         
-        <button 
-          onClick={handleReturnHome}
-          className="w-full px-4 sm:px-6 py-2 sm:py-3 border border-white text-white font-bold text-sm sm:text-base rounded-none hover:scale-105 transition-all duration-300 hover:bg-white hover:bg-opacity-10"
-        >
-          返回首頁
-        </button>
+        <div className="bg-white/5 rounded-lg p-4 sm:p-5 border border-white/20 backdrop-blur-sm transition-all duration-300">
+          <button 
+            onClick={handleReturnHome}
+            className="w-full font-bold text-sm sm:text-base transition-all duration-300 focus:outline-none text-white hover:text-blue-300"
+          >
+            返回首頁
+          </button>
+        </div>
       </div>
 
       {/* 分享提示 */}

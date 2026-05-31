@@ -66,3 +66,70 @@ button:active:not(:disabled) {
   -moz-user-select: none;
   -ms-user-select: none;
 }
+
+/* 浮動泡泡動畫 */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  50% {
+    transform: translateY(-40px) translateX(-10px);
+  }
+  75% {
+    transform: translateY(-20px) translateX(15px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(147, 197, 253, 0.5), 0 0 60px rgba(147, 197, 253, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(147, 197, 253, 0.7), 0 0 100px rgba(147, 197, 253, 0.4);
+  }
+}
+
+.floating-bubble {
+  position: fixed;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(147, 197, 253, 0.4), rgba(147, 197, 253, 0.1));
+  border: 2px solid rgba(147, 197, 253, 0.5);
+  pointer-events: none;
+  z-index: 0;
+  animation: float 8s ease-in-out infinite, glow 3s ease-in-out infinite;
+}
+
+.floating-bubble:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s, 0s;
+}
+
+.floating-bubble:nth-child(2) {
+  width: 120px;
+  height: 120px;
+  top: 20%;
+  right: 15%;
+  animation-delay: 2s, 1s;
+}
+
+.floating-bubble:nth-child(3) {
+  width: 60px;
+  height: 60px;
+  bottom: 20%;
+  left: 15%;
+  animation-delay: 4s, 2s;
+}
+
+.floating-bubble:nth-child(4) {
+  width: 100px;
+  height: 100px;
+  bottom: 10%;
+  right: 10%;
+  animation-delay: 1s, 1.5s;
+}

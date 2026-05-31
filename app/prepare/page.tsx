@@ -8,7 +8,7 @@ import { useState } from 'react';
     const [isLoading, setIsLoading] = useState(false);
 
   return(
-    <div className="flex flex-col justify-center items-center h-screen w-full gap-6 sm:gap-8 p-4 sm:p-6 bg-gray-950">
+    <div className="flex flex-col justify-center items-center h-screen w-full gap-6 sm:gap-8 p-4 sm:p-6 bg-black">
       {/* 標題 */}
       <div className="text-center">
         <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">
@@ -21,18 +21,20 @@ import { useState } from 'react';
 
       {/* 加載動畫 */}
       <div className="flex gap-2">
-        <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{animationDelay: '0s'}}></div>
-        <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-        <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{animationDelay: '0.4s'}}></div>
+        <div className="w-3 h-3 bg-white rounded-none animate-bounce" style={{animationDelay: '0s'}}></div>
+        <div className="w-3 h-3 bg-white rounded-none animate-bounce" style={{animationDelay: '0.2s'}}></div>
+        <div className="w-3 h-3 bg-white rounded-none animate-bounce" style={{animationDelay: '0.4s'}}></div>
       </div>
 
       {/* 按鈕 */}
-      <Link 
-        href="/result"
-        className="mt-6 sm:mt-8 px-6 sm:px-8 py-2 sm:py-3 border border-white text-white font-bold text-base sm:text-lg rounded-none hover:scale-105 transition-all duration-300 hover:bg-white hover:bg-opacity-10"
-      >
-        看結果！ →
-      </Link>
+      <div className="bg-white/5 rounded-lg p-4 sm:p-5 border border-white/20 backdrop-blur-sm transition-all duration-300 mt-6 sm:mt-8">
+        <Link 
+          href="/result"
+          className="block font-bold text-base sm:text-lg transition-all duration-300 text-white hover:text-blue-300"
+        >
+          看結果！ →
+        </Link>
+      </div>
     </div>
   );
 }
